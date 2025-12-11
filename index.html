@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <title>Web Bucin Pink</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body {
     margin: 0;
@@ -12,35 +13,42 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
   }
 
   .wrapper { 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center; 
-    z-index: 10; 
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
   }
 
   .logo {
     width: 150px;
-    margin-bottom: 20px;
+    max-width: 100%;
+    margin-bottom: 15px;
     filter: drop-shadow(0 0 20px #ff4fa3);
   }
 
   h1 { 
     color: #ff2d7d; 
     text-shadow: 0 0 6px white; 
-    font-size: 32px; 
+    font-size: 28px; 
     margin-bottom: 15px; 
   }
 
   .container { 
-    background: rgba(255,255,255,0.65); 
-    padding: 22px; 
+    background: rgba(255,255,255,0.75); 
+    padding: 20px; 
     border-radius: 15px; 
-    width: 300px; 
-    margin: auto; 
+    width: 100%; 
     box-shadow: 0 0 20px rgba(255,0,100,0.3); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   input, textarea { 
@@ -58,23 +66,30 @@
   button { 
     margin-top: 12px; 
     padding: 10px 15px; 
-    width: 100%; 
+    width: 95%; 
+    max-width: 250px;
     background: #ff2d7d; 
     border: none; 
     color: white; 
-    font-size: 18px; 
+    font-size: 16px; 
     border-radius: 8px; 
     cursor: pointer; 
     box-shadow: 0 0 10px rgba(255,0,120,0.5); 
+    transition: transform 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.05);
   }
 
   #hasil { 
-    margin-top: 18px; 
-    font-size: 20px; 
+    margin-top: 15px; 
+    font-size: 18px; 
     color: #d60062; 
     opacity: 0; 
-    transform: translateY(15px); 
+    transform: translateY(10px); 
     transition: 0.5s; 
+    word-wrap: break-word;
   }
 
   .show { 
@@ -83,14 +98,17 @@
   }
 
   .author {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    right: 0;
-    text-align: center;
+    margin-top: 15px;
     font-size: 14px;
     color: #ff2d7d;
+    text-align: center;
     text-shadow: 0 0 4px white;
+  }
+
+  @media(max-width: 350px){
+    h1 { font-size: 24px; }
+    input, textarea { font-size: 14px; }
+    button { font-size: 14px; padding: 8px; }
   }
 </style>
 </head>
@@ -98,7 +116,7 @@
 
 <div class="wrapper">
 
-  <img src="logo.jpg" class="logo">
+  <img src="logo.jpg" class="logo" alt="Logo">
 
   <h1>💗 Web Bucin Pink</h1>
 
@@ -109,7 +127,7 @@
     <button onclick="tampil()">Tampilkan Kata Bucin</button>
     <div id="hasil"></div>
 
-    <hr style="margin: 15px 0; border: 1px solid #ff9ac5;">
+    <hr style="margin: 15px 0; border: 1px solid #ff9ac5; width:90%;">
 
     <label>Tambah Kata Bucin Baru:</label>
     <textarea id="kataBaru" rows="2" placeholder="Gunakan {nama} jika ingin otomatis memakai nama..."></textarea>
@@ -118,9 +136,9 @@
     <p id="notif" style="font-size:14px;color:#ff2d7d;margin-top:10px;"></p>
   </div>
 
-</div>
+  <p class="author">© 2025 • Created with 💗 by Lenz</p>
 
-<p class="author">© 2025 • Created with 💗 by LenDev</p>
+</div>
 
 <script>
   let kata = [
@@ -131,7 +149,6 @@
     "{nama}, boleh gak aku sayang kamu terus?"
   ];
 
-  // daftar kata kasar yang diblokir
   const filterKasar = [
     "anjing", "babi", "kontol", "memek", "bangsat", "kampret",
     "tolol", "goblok", "idiot", "keparat", "kimak", "asw"
@@ -146,7 +163,6 @@
 
     const box = document.getElementById("hasil");
     box.innerHTML = hasil;
-
     box.classList.remove("show");
     setTimeout(() => box.classList.add("show"), 10);
   }
@@ -160,7 +176,6 @@
       return;
     }
 
-    // cek kata kasar
     const lower = teks.toLowerCase();
     for (let kataKasar of filterKasar) {
       if (lower.includes(kataKasar)) {
@@ -169,7 +184,6 @@
       }
     }
 
-    // aman → tambahkan
     kata.push(teks);
     notif.innerHTML = "✔ Kata bucin baru berhasil ditambahkan!";
     document.getElementById("kataBaru").value = "";
