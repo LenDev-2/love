@@ -21,14 +21,10 @@
     z-index: 10; 
   }
 
-  /* LOGO – Glow Pink */
   .logo {
     width: 150px;
-    height: auto;
     margin-bottom: 20px;
-    object-fit: contain;
-    border-radius: 10px;
-    filter: drop-shadow(0 0 20px #ff4fa3); /* glow pink */
+    filter: drop-shadow(0 0 20px #ff4fa3);
   }
 
   h1 { 
@@ -47,7 +43,7 @@
     box-shadow: 0 0 20px rgba(255,0,100,0.3); 
   }
 
-  input { 
+  input, textarea { 
     width: 90%; 
     padding: 10px; 
     margin-top: 10px; 
@@ -85,33 +81,60 @@
     opacity: 1 !important; 
     transform: translateY(0) !important; 
   }
-</style>
 
+  .author {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 14px;
+    color: #ff2d7d;
+    text-shadow: 0 0 4px white;
+  }
+</style>
 </head>
 <body>
 
 <div class="wrapper">
 
-  <!-- Logo kamu -->
-  <img src="logo.jpg" alt="Logo" class="logo">
+  <img src="logo.jpg" class="logo">
 
   <h1>💗 Web Bucin Pink</h1>
 
   <div class="container">
     <label>Masukkan Nama Ayang:</label>
     <input type="text" id="nama" placeholder="Nama dia...">
+
     <button onclick="tampil()">Tampilkan Kata Bucin</button>
     <div id="hasil"></div>
+
+    <hr style="margin: 15px 0; border: 1px solid #ff9ac5;">
+
+    <label>Tambah Kata Bucin Baru:</label>
+    <textarea id="kataBaru" rows="2" placeholder="Gunakan {nama} jika ingin otomatis memakai nama..."></textarea>
+    <button onclick="tambahKata()">Tambah Kata</button>
+
+    <p id="notif" style="font-size:14px;color:#ff2d7d;margin-top:10px;"></p>
   </div>
+
 </div>
 
+<p class="author">© 2025 • Created with 💗 by Lenz</p>
+
 <script>
-  const kata = [
+  let kata = [
     "{nama}, kamu itu manis banget sampe gula kalah.",
     "Kalau ada ranking orang tercantik/terganteng, kamu juaranya {nama}.",
     "Setiap hari aku suka sama kamu, tapi hari ini lebih lagi {nama}.",
     "Sehebat apapun hari ini… tetap kamu yang paling bikin aku bahagia, {nama}.",
     "{nama}, boleh gak aku sayang kamu terus?"
+  ];
+
+  // daftar kata kasar yang diblokir
+  const filterKasar = [
+    "anjing", "babi", "kontol", "memek", "bangsat", "kampret",
+    "tolol", "goblok", "idiot", "keparat", "kimak", "asw"
   ];
 
   function tampil() {
@@ -126,6 +149,30 @@
 
     box.classList.remove("show");
     setTimeout(() => box.classList.add("show"), 10);
+  }
+
+  function tambahKata() {
+    const teks = document.getElementById("kataBaru").value.trim();
+    const notif = document.getElementById("notif");
+
+    if (teks === "") {
+      notif.innerHTML = "❗ Teks masih kosong!";
+      return;
+    }
+
+    // cek kata kasar
+    const lower = teks.toLowerCase();
+    for (let kataKasar of filterKasar) {
+      if (lower.includes(kataKasar)) {
+        notif.innerHTML = "❗ Kata tidak boleh mengandung kata kasar!";
+        return;
+      }
+    }
+
+    // aman → tambahkan
+    kata.push(teks);
+    notif.innerHTML = "✔ Kata bucin baru berhasil ditambahkan!";
+    document.getElementById("kataBaru").value = "";
   }
 </script>
 
